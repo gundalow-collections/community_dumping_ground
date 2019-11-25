@@ -1,0 +1,3 @@
+gitlab_user_pass: Secr3tPassw00rd
+gitlab_user_email: root@localhost
+community.dumping_ground.gitlab_user: ansible_test_user

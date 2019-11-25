@@ -1,0 +1,45 @@
+- name: Install required libs
+  pip:
+    name: python-gitlab
+    state: present
+- name: Create {{ gitlab_project_name }}
+  community.dumping_ground.gitlab_project:
+    server_url: '{{ gitlab_host }}'
+    validate_certs: false
+    login_token: '{{ gitlab_login_token }}'
+    name: '{{ gitlab_project_name }}'
+    state: present
+- name: Cleanup GitLab runner
+  community.dumping_ground.gitlab_runner:
+    server_url: '{{ gitlab_host }}'
+    validate_certs: false
+    login_token: '{{ gitlab_login_token }}'
+    description: '{{ gitlab_runner_name }}'
+    registration_token: '{{ gitlab_runner_registration_token }}'
+    state: absent
+- name: Create GitLab Runner
+  register: gitlab_runner_state
+  community.dumping_ground.gitlab_runner:
+    server_url: '{{ gitlab_host }}'
+    validate_certs: false
+    login_token: '{{ gitlab_login_token }}'
+    description: '{{ gitlab_runner_name }}'
+    registration_token: '{{ gitlab_runner_registration_token }}'
+    state: present
+- name: Test group created
+  assert:
+    that:
+    - gitlab_runner_state is changed
+- name: Remove GitLab Runner
+  register: gitlab_runner_state_absent
+  community.dumping_ground.gitlab_runner:
+    server_url: '{{ gitlab_host }}'
+    validate_certs: false
+    login_token: '{{ gitlab_login_token }}'
+    description: '{{ gitlab_runner_name }}'
+    registration_token: '{{ gitlab_runner_registration_token }}'
+    state: absent
+- name: Assert runner has been removed
+  assert:
+    that:
+    - gitlab_runner_state_absent is changed

@@ -1,0 +1,14 @@
+namespace: community
+name: dumping_ground
+version: 1.0.0
+readme: null
+authors: null
+description: null
+license: null
+license_file: null
+tags: null
+dependencies: {}
+repository: git@github.com:gundalow-collections/community_dumping_ground.git
+documentation: null
+homepage: null
+issues: null
